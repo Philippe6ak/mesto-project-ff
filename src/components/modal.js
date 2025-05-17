@@ -1,66 +1,35 @@
-export function managePopup(popupSelector, openButtonSelector, closeButtonSelector) {
-  const popup = document.querySelector(popupSelector);
-  const openButton = document.querySelector(openButtonSelector);
-  const closeButton = document.querySelector(closeButtonSelector);
+let currentPopup = null;
 
-  function openPopup() {
-    popup.classList.remove('popup_is-animated');
-    popup.classList.add('popup_is-opened');
-    document.addEventListener('click', clickClose);
-    document.addEventListener('keydown', escClose);
-  }
+export function openPopup(popup) {
+  currentPopup = popup;
+  popup.classList.add('popup_is-opened');
+  document.addEventListener('keydown', escClose);
+  popup.addEventListener('click', clickClose);
+}
 
-  function closePopup() {
-    popup.classList.remove('popup_is-opened');
-    popup.classList.add('popup_is-animated');
-    console.log('it should be closing');
-    document.removeEventListener('click', clickClose);
+export function closePopup() {
+  if (currentPopup) {
+    currentPopup.classList.remove('popup_is-opened');
     document.removeEventListener('keydown', escClose);
+    currentPopup.removeEventListener('click', clickClose);
+    currentPopup = null;
   }
+}
 
-  function clickClose(evt) {
-    const popupContent = popup.querySelector('.popup__content');
-    if (popup.contains(evt.target) && !popupContent.contains(evt.target)) {
-      closePopup();
-    }
+// Fixed click handler
+function clickClose(evt) {
+  const popupContent = currentPopup.querySelector('.popup__content');
+  if (evt.target === currentPopup || !popupContent.contains(evt.target)) {
+    closePopup();
   }
+}
 
-  function escClose(evt) {
-    if (evt.key === 'Escape') {
-      closePopup();
-    }
+function escClose(evt) {
+  if (evt.key === 'Escape') {
+    closePopup();
   }
+}
 
-  openButton.addEventListener('click', openPopup);
-  closeButton.addEventListener('click', closePopup);
-  popup.addEventListener('submit', closePopup);
-};
-
-export function manageImgPopup(popupSelector, closeButtonSelector) {
-  const popup = document.querySelector(popupSelector);
-  const closeButton = document.querySelector(closeButtonSelector);
-
-  function closePopup() {
-    popup.classList.remove('popup_is-opened');
-    popup.classList.add('popup_is-animated');
-    console.log('it should be closing');
-    document.removeEventListener('click', clickClose);
-    document.removeEventListener('keydown', escClose);
-  }
-
-  function clickClose(evt) {
-    const popupContent = popup.querySelector('.popup__content');
-    if (popup.contains(evt.target) && !popupContent.contains(evt.target)) {
-      closePopup();
-    }
-  }
-
-  function escClose(evt) {
-    if (evt.key === 'Escape') {
-      closePopup();
-    }
-  }
-
-  closeButton.addEventListener('click', closePopup);
-  popup.addEventListener('submit', closePopup);
-};
+export const popupCardView = document.querySelector('.popup_type_image');
+export const popupImage = popupCardView.querySelector('.popup__image');
+export const popupCaption = popupCardView.querySelector('.popup__caption');
