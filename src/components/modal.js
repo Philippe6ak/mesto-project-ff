@@ -16,7 +16,6 @@ export function closePopup() {
   }
 }
 
-// Fixed click handler
 function clickClose(evt) {
   const popupContent = currentPopup.querySelector('.popup__content');
   if (evt.target === currentPopup || !popupContent.contains(evt.target)) {
@@ -29,7 +28,3 @@ function escClose(evt) {
     closePopup();
   }
 }
-
-export const popupCardView = document.querySelector('.popup_type_image');
-export const popupImage = popupCardView.querySelector('.popup__image');
-export const popupCaption = popupCardView.querySelector('.popup__caption');

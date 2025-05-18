@@ -1,5 +1,3 @@
-import { openPopup, popupImage, popupCaption, popupCardView } from './modal.js';
-
 export function createCards(cardData, deleteCard, likeCard, viewCard) {
     const cardTemplate = document.querySelector('#card-template');
     const cardElement = cardTemplate.content.cloneNode(true).firstElementChild;
@@ -23,11 +21,4 @@ export function deleteCard(cardElement) {
 
 export function likeCard(evt) {
     evt.target.classList.toggle('card__like-button_is-active');
-};
-
-export function viewCard(cardData) {
-    popupImage.src = cardData.link;
-    popupImage.alt = cardData.name;
-    popupCaption.textContent = cardData.name;
-    openPopup(popupCardView);
 };
