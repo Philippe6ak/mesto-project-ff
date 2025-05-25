@@ -108,14 +108,7 @@ function addCardHandler(evt) {
   evt.preventDefault();
   addCard(pictureTitleInput.value, pictureLinkInput.value)
     .then((res) => {
-      // const pictureTitle = res.name;
-      // const pictureLink = res.link;
-
-      // const cardData = {
-      //   name: pictureTitle,
-      //   link: pictureLink
-      // }
-      const newCard = createCards(res, deleteCard, likeCard, () => viewCard(cardData), userId);
+      const newCard = createCards(res, deleteCard, likeCard, () => viewCard(res), userId);
       cardContainer.prepend(newCard);
       closePopup();
       pictureFormElement.reset();
@@ -130,7 +123,7 @@ function editProfilePictureHandler(evt) {
   renderLoading(true, profilePicFormElement);
   updateProfilePic(profilePicLink.value)
     .then((res) => {
-      profileImg.style.backgroundImage = res.avatar;
+      profileImg.style.backgroundImage = `url('${res.avatar}?t=${Date.now()}')`; //только "сброс кэша" исправил ошибку (из GPT), не горжусь но по другомму не смог решить
       closePopup();
     })
     .catch(err => console.log('could not update avatar :' + err))
