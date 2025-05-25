@@ -1,1 +1,1 @@
-https://philippe6ak.github.io/mesto-project-ff
+https://philippe6ak.github.io/mesto-project-ff/
