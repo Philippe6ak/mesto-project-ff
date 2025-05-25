@@ -41,12 +41,14 @@ Promise.all([getLoggedUser(), getInitialCards()])
   .then(([user, cards]) => {
     userId = user._id;
     avatar = user.avatar;
+    profileName.textContent = user.name;
+    profileDesc.textContent = user.about;
 
     profileImg.style.backgroundImage = `url(${avatar})`;
 
     cards.forEach((cardData) => {
       const card = createCards(cardData, deleteCard, likeCard, viewCard, userId);
-      cardContainer.appendChild(card);
+      cardContainer.append(card);
     });
   })
   .catch((err) => {
@@ -92,35 +94,34 @@ function editProfileHandler(evt) {
     .then((res) => {
       profileName.textContent = res.name;
       profileDesc.textContent = res.about;
+      closePopup();
+      formElement.reset();
     })
-    .catch(err => console.log('could not update the user name :' + err));
-
-    formElement.reset();
-    renderLoading(false, formElement);
-    closePopup();
+    .catch(err => console.log('could not update the user name :' + err))
+    .finally(() => {renderLoading(false, formElement)})
 }
 formElement.addEventListener('submit', editProfileHandler);
 
 //Saving data when adding card
 function addCardHandler(evt) {
-  renderLoading(true, profileFormElement);
+  renderLoading(true, pictureFormElement);
   evt.preventDefault();
   addCard(pictureTitleInput.value, pictureLinkInput.value)
     .then((res) => {
-      const pictureTitle = res.name;
-      const pictureLink = res.link;
+      // const pictureTitle = res.name;
+      // const pictureLink = res.link;
 
-      const cardData = {
-        name: pictureTitle,
-        link: pictureLink
-      }
-      const newCard = createCards(cardData, deleteCard, likeCard, () => {viewCard(cardData)}, userId);
-      cardContainer.appendChild(newCard);
+      // const cardData = {
+      //   name: pictureTitle,
+      //   link: pictureLink
+      // }
+      const newCard = createCards(res, deleteCard, likeCard, () => viewCard(cardData), userId);
+      cardContainer.prepend(newCard);
+      closePopup();
+      pictureFormElement.reset();
     })
-    .catch(err => console.log('new card could not be added : ' + err));
-  pictureFormElement.reset();
-  renderLoading(false, profileFormElement);
-  closePopup();
+    .catch(err => alert(err))
+    .finally(() => {renderLoading(false, pictureFormElement)})
 }
 pictureFormElement.addEventListener('submit', addCardHandler);
 
@@ -130,12 +131,10 @@ function editProfilePictureHandler(evt) {
   updateProfilePic(profilePicLink.value)
     .then((res) => {
       profileImg.style.backgroundImage = res.avatar;
+      closePopup();
     })
-    .catch(err => console.log('could not update avatar :' + err));
-  
-  renderLoading(false, profilePicFormElement);
-  closePopup();
-  //need to add and remove loading
+    .catch(err => console.log('could not update avatar :' + err))
+    .finally(() => {renderLoading(false, profilePicFormElement);})
 }
 profilePicFormElement.addEventListener('submit', editProfilePictureHandler);
 
@@ -158,3 +157,16 @@ const validationConfig = {
   errorClass: 'form__input_error_active' 
 }; 
 enableValidation(validationConfig);
+
+
+
+
+const renderCard = (cardItem, myId, method = 'prepend') => {
+  const cardElement = createCard(
+    cardItem,
+    myId,
+    handlerLikeCard,
+    handlerCardView
+  );
+  listCard[method](cardElement);
+};

@@ -13,14 +13,10 @@ const hideInputError = (formElement, inputElement, config) => {
 };
 
 const checkInputValidity = (formElement, inputElement, config) => {
-    if (inputElement.hasAttribute("data-allowed-chars")) {
-        const regex = new RegExp(`^[${inputElement.dataset.allowedChars}]+$`, "i");
-        const isPatternValid = regex.test(inputElement.value);
-        if (!isPatternValid) {
-            inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-        } else {
-            inputElement.setCustomValidity("");
-        };
+    if (inputElement.validity.patternMismatch) {
+        inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+    } else {
+        inputElement.setCustomValidity("");
     };
 
     if (!inputElement.validity.valid) {

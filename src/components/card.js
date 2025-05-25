@@ -1,8 +1,8 @@
 import { addLike, removeCard, removeLike } from "./api.js"
 
 export function createCards(cardData, deleteCard, likeCard, viewCard, userId) {
-  const cardTemplate = document.querySelector('#card-template');
-  const cardElement = cardTemplate.content.cloneNode(true).querySelector('.card');
+  const cardTemplate = document.querySelector('#card-template').content;
+  const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const deleteBtn = cardElement.querySelector('.card__delete-button');
   const likeBtn = cardElement.querySelector('.card__like-button');
@@ -15,7 +15,7 @@ export function createCards(cardData, deleteCard, likeCard, viewCard, userId) {
   cardElement.querySelector('.card__title').textContent = cardData.name;
   
   cardImage.addEventListener('click', () => viewCard(cardData));
-  likeBtn.addEventListener('click', (evt) => likeCard(evt, cardElement));
+  likeBtn.addEventListener('click', (evt) => likeCard(evt, cardElement.id, likeBtn, likeCount));
 
   if (cardData.likes.some(like => like._id === userId)) {
     likeBtn.classList.add('card__like-button_is-active');
@@ -32,24 +32,23 @@ export function createCards(cardData, deleteCard, likeCard, viewCard, userId) {
   return cardElement;
 };
 
-export function likeCard(evt, cardElement) {
+export function likeCard(evt, cardId, likeBtn, likeCount) {
   const likedCard = evt.currentTarget;
-  const likeCount = cardElement.querySelector('.card__like_qty');
   if (likedCard.classList.contains('card__like-button_is-active')) {
-    removeLike(cardElement.id)
+    removeLike(cardId)
       .then((res) => {
         likeCount.textContent = res.likes.length;
-        likedCard.classList.remove('card__like-button_is-active');
+        likeBtn.classList.remove('card__like-button_is-active');
       })
       .catch((err) => {
         console.log('could not update likes : ' + err);
       })
   }
   else {
-    addLike(cardElement.id)
+    addLike(cardId)
       .then((res) => {
         likeCount.textContent = res.likes.length;
-        likedCard.classList.add('card__like-button_is-active');
+        likeBtn.classList.add('card__like-button_is-active');
       })
       .catch((err) => {
         console.log('could not update likes : ' + err);

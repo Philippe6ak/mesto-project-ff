@@ -31,7 +31,7 @@ export function getLoggedUser() {
 };
 
 export function editingProfile(name, description) {
-    return fetch(config.baseUrl + '/users/me', {
+    return fetch(config.baseUrl + 'users/me', {
         method: 'PATCH',
         headers: config.headers,
         body: JSON.stringify({
@@ -43,7 +43,7 @@ export function editingProfile(name, description) {
 };
 
 export function addCard(cardName, cardLink) {
-    return fetch(config.baseUrl + 'cards/', {
+    return fetch(config.baseUrl + 'cards', {
         method: 'POST',
         headers: config.headers,
         body: JSON.stringify({
