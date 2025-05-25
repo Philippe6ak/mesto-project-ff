@@ -69,10 +69,10 @@
               required
               minlength="2"
               maxlength="40"
-              data-allowed-chars="a-zа-яёЁ -"
+              pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
             />
-            <span class="popup__input_type_error name-input-error"></span>
+            <span class="name-input-error"></span>
             <input
               type="text"
               id="description-input"
@@ -82,9 +82,11 @@
               required
               minlength="2"
               maxlength="200"
+              pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
             />
             <span
-              class="popup__input_type_error description-input-error"
+              class="description-input-error"
             ></span>
             <button type="submit" class="button popup__button" disabled>
               Сохранить
@@ -106,10 +108,10 @@
               required
               minlength="2"
               maxlength="30"
-              data-allowed-chars="a-zа-яёЁ -"
+              pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
             />
-            <span class="popup__input_type_error place-name-input-error"></span>
+            <span class="place-name-input-error"></span>
             <input
               type="url"
               name="link"
@@ -118,7 +120,7 @@
               placeholder="Ссылка на картинку"
               required
             />
-            <span class="popup__input_type_error link-input-error"></span>
+            <span class="link-input-error"></span>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -153,7 +155,7 @@
               required
             />
             <span
-              class="popup__input_type_error edit-profile-input-error"
+              class="profile-link-input-error"
             ></span>
             <button type="submit" class="button popup__button">
               Сохранить
